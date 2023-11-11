@@ -1,17 +1,24 @@
 package org.example.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "Person")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Person {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-        generator = "seq_generator_person")
-    @SequenceGenerator(name="seq_generator_person",
-        sequenceName = "person_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "name")
@@ -20,32 +27,16 @@ public class Person {
     @Column(name = "age")
     private int age;
 
-    public Person() {}
+    @OneToMany(mappedBy = "owner")
+    private List<Item> items;
 
-    public Person(String name, int age) {
-        this.name = name;
-        this.age = age;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
 
     @Override
     public String toString() {
-        return this.name +
-                ", " + this.age;
+        return "Person{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                '}';
     }
 }
